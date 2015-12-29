@@ -37,6 +37,7 @@ TcpClient::TcpClient(bool autoreconnect)
 	, timerTimeout_(io_service)
 
 	, _autoreconnect(autoreconnect)
+	, _errorconnect(false)
 	, _reconnectCount(0)
 {
 #ifdef WITH_SSL
@@ -75,6 +76,10 @@ void TcpClient::Connect(const std::string& address, uint32 port)
 {
 	_address = address;
 	_port = port;
+
+	_errorconnect = false;
+	_reconnectCount = 0;
+
 
 	if (!Reconnect())
 	{
@@ -155,10 +160,21 @@ bool TcpClient::VerifyCertificate(bool preverified, boost::asio::ssl::verify_con
 
 void TcpClient::WaitReconnect()
 {
+	reconnectTimer_.cancel();
+
+	if (_errorconnect)
+	{
+		return;
+	}
+
 	if (!_autoreconnect || _reconnectCount > 5)
 	{
+		_errorconnect = true;
 		ConnectError.Invoke(this);
+		return;
 	}
+
+
 
 	reconnectTimer_.expires_from_now(boost::posix_time::seconds(5));
 	
@@ -190,6 +206,7 @@ bool TcpClient::Reconnect()
 				if (!ec)
 				{
 					_connected = true;
+					_errorconnect = false;
 					_reconnectCount = 0;
 					socket_.async_handshake(boost::asio::ssl::stream_base::client,
 						[this](const boost::system::error_code& ec){
@@ -289,7 +306,7 @@ void TcpClient::DoRead()
 void TcpClient::DoWrite()
 {
 	// send commands and functions.
-	std::lock_guard<std::mutex> _lock(_mutex);
+	std::lock_guard<std::mutex> lock(_mutex);
 
 	if (_commands.empty())
 	{

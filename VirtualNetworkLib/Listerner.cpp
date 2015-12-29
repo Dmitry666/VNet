@@ -16,11 +16,21 @@ Listerner::Listerner(int32 port, VirtualNetwork* virtualNetwork)
 	: _address("0.0.0.0")
 	, _port(port)
 
-	, _virtualNetworkPrivate(virtualNetwork->_virtualNetworkPrivate->shared_from_this())
+	//, _virtualNetworkPrivate(virtualNetwork->_virtualNetworkPrivate->shared_from_this())
+	, _virtualConnection(nullptr)
 	, _tcpServer(nullptr)
 {
 	_tcpServer = new TcpServer(_address, std::to_string(port));
-	_virtualConnection = _virtualNetworkPrivate->CreateConnection(std::to_string(port));
+
+	if (virtualNetwork != nullptr && virtualNetwork->_virtualNetworkPrivate != nullptr)
+	{
+		_virtualNetworkPrivate = virtualNetwork->_virtualNetworkPrivate->shared_from_this();
+	}
+
+	if (_virtualNetworkPrivate != nullptr)
+	{ 
+		_virtualConnection = _virtualNetworkPrivate->CreateConnection(std::to_string(port));
+	}
 }
 
 Listerner::Listerner(const std::string& address, int32 port, VirtualNetwork* virtualNetwork)
@@ -28,15 +38,22 @@ Listerner::Listerner(const std::string& address, int32 port, VirtualNetwork* vir
 	, _port(port)
 
 	, _virtualNetworkPrivate(virtualNetwork->_virtualNetworkPrivate->shared_from_this())
+	, _virtualConnection(nullptr)
 	, _tcpServer(nullptr)
 {
 	_tcpServer = new TcpServer(address, std::to_string(port));
-	_virtualConnection = _virtualNetworkPrivate->CreateConnection(std::to_string(port));
+	if (_virtualNetworkPrivate != nullptr)
+	{
+		_virtualConnection = _virtualNetworkPrivate->CreateConnection(std::to_string(port));
+	}
 }
 
 Listerner::~Listerner()
 {
-	_virtualNetworkPrivate->RemoveConnection(_virtualConnection);
+	if (_virtualNetworkPrivate != nullptr)
+	{
+		_virtualNetworkPrivate->RemoveConnection(_virtualConnection);
+	}
 
 	for (Socket* socket : _sockets)
 		delete socket;

@@ -53,6 +53,7 @@ void TcpConnection::Stop()
 
 void TcpConnection::Send(const uint8* bytes, uint32 size)
 {
+	// TODO. ????? Empty?
 }
 
 void TcpConnection::DoRead()

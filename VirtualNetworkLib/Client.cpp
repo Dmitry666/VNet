@@ -10,14 +10,28 @@ namespace vnet {
 
 Client::Client(VirtualNetwork* virtualNetwork)
 	: _socket(nullptr)
-	, _virtualNetworkPrivate(virtualNetwork->_virtualNetworkPrivate->shared_from_this())
+	//, _virtualNetworkPrivate(virtualNetwork->_virtualNetworkPrivate->shared_from_this())
+	, _virtualConnection(nullptr)
 {
-	_virtualConnection = _virtualNetworkPrivate->CreateConnection();
+
+	if (virtualNetwork != nullptr && virtualNetwork->_virtualNetworkPrivate != nullptr)
+	{
+		_virtualNetworkPrivate = virtualNetwork->_virtualNetworkPrivate->shared_from_this();
+	}
+
+	if (_virtualNetworkPrivate != nullptr && _virtualNetworkPrivate->IsInitialized())
+	{
+		_virtualConnection = _virtualNetworkPrivate->CreateConnection();
+	}
 }
 
 Client::~Client()
 {
-	_virtualNetworkPrivate->RemoveConnection(_virtualConnection);
+	if (_virtualConnection != nullptr)
+	{
+		_virtualNetworkPrivate->RemoveConnection(_virtualConnection);
+	}
+	
 	delete _socket;
 }
 
@@ -67,7 +81,15 @@ void Client::Connect(const std::string& address, uint32 port)
 		};
 
 		socket->ConnectError += [this, virtualConnect, address, port](DirectSocket* socket){
-			virtualConnect(address, port);
+			if (_virtualConnection != nullptr)
+			{
+				virtualConnect(address, port);
+			}		
+			else
+			{
+				// No virtual connection.
+				ConnectError.Invoke(this);
+			}
 		};
 
 		socket->Connect(address, port);
@@ -79,7 +101,16 @@ void Client::Connect(const std::string& address, uint32 port)
 		if (index != address.size() - 1)
 		{
 			std::string virtualAddress = std::string(address.begin() + strlen("vbtp://"), address.end());
-			virtualConnect(virtualAddress, port);
+			if (_virtualConnection != nullptr)
+			{
+				virtualConnect(virtualAddress, port);
+			}
+			else
+			{
+				// No virtual connection.
+				ConnectError.Invoke(this);
+			}
+
 			return;
 		}
 	}

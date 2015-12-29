@@ -134,6 +134,7 @@ private:
 	boost::asio::deadline_timer timerTimeout_;
 
 	bool _autoreconnect;
+	bool _errorconnect;
 	uint32 _reconnectCount;
 };
 
