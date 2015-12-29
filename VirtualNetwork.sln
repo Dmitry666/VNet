@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40418.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VirtualNetworkLib", "VirtualNetworkLib\VirtualNetworkLib.vcxproj", "{F77C8693-D0BC-4535-B7E9-FB8ECD03DB65}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6D6A772A-53D6-427F-AE4D-638015E1B826} = {6D6A772A-53D6-427F-AE4D-638015E1B826}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VirtualNetworkServer", "VirtualNetwork\VirtualNetwork.vcxproj", "{8577B5AF-6C02-4BE1-A449-47803EF5741D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6D6A772A-53D6-427F-AE4D-638015E1B826} = {6D6A772A-53D6-427F-AE4D-638015E1B826}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VirtualNetworkCommon", "VirtualNetworkCommon\VirtualNetworkCommon.vcxproj", "{6D6A772A-53D6-427F-AE4D-638015E1B826}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VirtualNetworkTestClient", "VirtualNetworkTestClient\VirtualNetworkTestClient.vcxproj", "{46B55CBC-E429-4203-B2D8-59F7E48879D4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F77C8693-D0BC-4535-B7E9-FB8ECD03DB65} = {F77C8693-D0BC-4535-B7E9-FB8ECD03DB65}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F77C8693-D0BC-4535-B7E9-FB8ECD03DB65}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F77C8693-D0BC-4535-B7E9-FB8ECD03DB65}.Debug|Win32.Build.0 = Debug|Win32
+		{F77C8693-D0BC-4535-B7E9-FB8ECD03DB65}.Release|Win32.ActiveCfg = Release|Win32
+		{F77C8693-D0BC-4535-B7E9-FB8ECD03DB65}.Release|Win32.Build.0 = Release|Win32
+		{8577B5AF-6C02-4BE1-A449-47803EF5741D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8577B5AF-6C02-4BE1-A449-47803EF5741D}.Debug|Win32.Build.0 = Debug|Win32
+		{8577B5AF-6C02-4BE1-A449-47803EF5741D}.Release|Win32.ActiveCfg = Release|Win32
+		{8577B5AF-6C02-4BE1-A449-47803EF5741D}.Release|Win32.Build.0 = Release|Win32
+		{6D6A772A-53D6-427F-AE4D-638015E1B826}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6D6A772A-53D6-427F-AE4D-638015E1B826}.Debug|Win32.Build.0 = Debug|Win32
+		{6D6A772A-53D6-427F-AE4D-638015E1B826}.Release|Win32.ActiveCfg = Release|Win32
+		{6D6A772A-53D6-427F-AE4D-638015E1B826}.Release|Win32.Build.0 = Release|Win32
+		{46B55CBC-E429-4203-B2D8-59F7E48879D4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{46B55CBC-E429-4203-B2D8-59F7E48879D4}.Debug|Win32.Build.0 = Debug|Win32
+		{46B55CBC-E429-4203-B2D8-59F7E48879D4}.Release|Win32.ActiveCfg = Release|Win32
+		{46B55CBC-E429-4203-B2D8-59F7E48879D4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

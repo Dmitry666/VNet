@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{9ca8e49a-0402-46ff-b413-2641e17a8a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private">
+      <UniqueIdentifier>{f8a42114-8830-4d28-b8f4-fcdffee5fbf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private\Tcp">
+      <UniqueIdentifier>{d5a391ac-806d-48f4-830f-7fb4290bfdac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Listerner.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualNetwork.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpClient.h">
+      <Filter>Private\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpServer.h">
+      <Filter>Private\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpConnection.h">
+      <Filter>Private\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualNetworkPrivate.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectSocket.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualSocket.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpConnectionManager.h">
+      <Filter>Private\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonPrivate.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="VN.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TcpClient.cpp">
+      <Filter>Private\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpServer.cpp">
+      <Filter>Private\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpConnection.cpp">
+      <Filter>Private\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualSocket.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectSocket.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpConnectionManager.cpp">
+      <Filter>Private\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualNetworkPrivate.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>Public</Filter>
+    </ClCompile>
+    <ClCompile Include="Listerner.cpp">
+      <Filter>Public</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
+      <Filter>Public</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualNetwork.cpp">
+      <Filter>Public</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
