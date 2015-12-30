@@ -6,6 +6,7 @@
 
 #include "Common.h"
 #include "Delegate.h"
+#include "TcpCommon.h"
 
 //#include "../common-private.h"
 //#include "tcp_request_handler.hpp"
@@ -15,6 +16,9 @@
 
 #include <array>
 #include <memory>
+#include <mutex>
+#include <deque>
+#include <thread>
 
 #ifndef _MSC_VER
 // save diagnostic state
@@ -116,6 +120,9 @@ private:
 
 	//! Holds the outbound data.
 	std::vector<uint8> outbound_data_;
+
+	std::deque<TcpCommand> _commands;				// Out data buffer from client.
+	std::mutex _mutex;
 };
 
 typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;

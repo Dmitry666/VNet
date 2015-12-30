@@ -59,6 +59,8 @@ TcpClient::TcpClient(bool autoreconnect)
 #endif
 
 #ifdef WITH_SSL
+	//socket_.reset(new boost::asio::ssl::stream<tcp::socket>(io_service, ctx_));
+
 	socket_.set_verify_mode(boost::asio::ssl::verify_peer);
 	socket_.set_verify_callback(
 		std::bind(&TcpClient::VerifyCertificate, this, std::placeholders::_1, std::placeholders::_2));

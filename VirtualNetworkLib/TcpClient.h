@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Delegate.h"
+#include "TcpCommon.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
@@ -12,46 +13,6 @@
 
 
 namespace vnet {
-
-/**
- * @brief Tcp command.
- */
-struct TcpCommand
-{
-	uint8* Data;
-	uint32 Size;
-
-	TcpCommand()
-		: Data(nullptr)
-		, Size(0)
-	{}
-
-	TcpCommand(const uint8* data, uint32 nbBytes)
-		: Size(nbBytes)
-	{
-		Data = reinterpret_cast<uint8*>(malloc(nbBytes)); // TODO. Allocator.
-		memcpy(Data, data, nbBytes);
-	}
-
-	TcpCommand(const TcpCommand& tcpCommand)
-		: Size(tcpCommand.Size)
-	{
-		Data = reinterpret_cast<uint8*>(malloc(Size)); // TODO. Allocator.
-		memcpy(Data, tcpCommand.Data, Size);
-	}
-
-	TcpCommand(TcpCommand&& tcpCommand)
-		: Size(tcpCommand.Size)
-	{
-		Data = tcpCommand.Data;
-		tcpCommand.Data = nullptr;
-	}
-
-	~TcpCommand()
-	{
-		free(Data);
-	}
-};
 
 /**
  * @brief Network tcp client.
@@ -104,6 +65,7 @@ private:
 
 	// The socket used to communicate with the client.
 #ifdef WITH_SSL
+	//std::auto_ptr<Socket> socket_;
 	Socket socket_;
 #else
 	Socket socket_;

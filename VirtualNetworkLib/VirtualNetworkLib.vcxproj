@@ -84,6 +84,7 @@
     <ClInclude Include="Listerner.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="TcpClient.h" />
+    <ClInclude Include="TcpCommon.h" />
     <ClInclude Include="TcpConnection.h" />
     <ClInclude Include="TcpConnectionManager.h" />
     <ClInclude Include="TcpServer.h" />

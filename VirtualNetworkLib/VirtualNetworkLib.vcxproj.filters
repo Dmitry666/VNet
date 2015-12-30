@@ -61,6 +61,9 @@
     <ClInclude Include="VN.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="TcpCommon.h">
+      <Filter>Private\Tcp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TcpClient.cpp">
