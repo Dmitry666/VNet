@@ -134,6 +134,11 @@ bool TcpClient::IsConnected()
 	return _connected;
 }
 
+void TcpClient::Ping()
+{
+	Send(nullptr, 0);
+}
+
 void TcpClient::Send(const uint8* bytes, uint32 nbBytes)
 {
 	std::lock_guard<std::mutex> _lock(_mutex);
@@ -283,24 +288,31 @@ void TcpClient::DoRead()
 			}
 
 			uint32 size = *reinterpret_cast<uint32*>(inbound_header_);
-
 			inbound_data_.resize(size);
-			boost::asio::async_read(socket_, boost::asio::buffer(inbound_data_),
-				[this](const boost::system::error_code& ec, size_t bytes_transferred) {
 
-					if (ec)
-					{
-						std::cout << ec.message() << std::endl;
-						WaitReconnect();
-						return;
+			if (size != 0)
+			{
+				boost::asio::async_read(socket_, boost::asio::buffer(inbound_data_),
+					[this](const boost::system::error_code& ec, size_t bytes_transferred) {
+
+						if (ec)
+						{
+							std::cout << ec.message() << std::endl;
+							WaitReconnect();
+							return;
+						}
+
+						uint8* data = reinterpret_cast<uint8*>(inbound_data_.data());
+						ReadyRead.Invoke(data, bytes_transferred);
+
+						DoWrite();
 					}
-
-					uint8* data = reinterpret_cast<uint8*>(inbound_data_.data());
-					ReadyRead.Invoke(data, bytes_transferred);
-
-					DoWrite();
-				}
-			); // End body async_read.
+				); // End body async_read.
+			}
+			else // TODO. Architecture bug.
+			{
+				DoWrite();
+			}
 		}
 	); // End header async_read.
 }

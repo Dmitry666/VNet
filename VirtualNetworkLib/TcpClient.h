@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Common.h"
-#include "Delegate.h"
 #include "TcpCommon.h"
+#include "Delegate.h"
+
 
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
@@ -34,6 +34,7 @@ public:
 	bool IsConnected();
 
 	// Send message methods.
+	void Ping(); // TODO. Special method. Architecture bug.
 	void Send(const uint8* bytes, uint32 nbBytes);
 
 public:

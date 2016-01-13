@@ -12,12 +12,14 @@ DirectSocket::DirectSocket()
 	: Socket()
 	, _tcpClient(nullptr)
 	, _tcpConnection(nullptr)
+	, _running(false)
 {}
 
 DirectSocket::DirectSocket(TcpConnection* tcpConnection)
 	: Socket()
 	, _tcpClient(nullptr)
 	, _tcpConnection(tcpConnection)
+	, _running(false)
 {
 	_tcpConnection->NewRequest += std::bind(&DirectSocket::OnNewRequest, this, std::placeholders::_1, std::placeholders::_2);
 }
@@ -41,6 +43,17 @@ void DirectSocket::Connect(const std::string& address, int32 port)
 		};
 
 		_tcpClient->ReadyRead += std::bind(&DirectSocket::OnNewRequest, this, std::placeholders::_1, std::placeholders::_2);
+
+		_running = true;
+		_thread = std::thread([this](){
+
+			do
+			{
+				_tcpClient->Ping();
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(300));
+			} while (_running);
+		});
 	};
 
 	_tcpClient->ConnectError = [this](TcpClient* client){
@@ -52,6 +65,10 @@ void DirectSocket::Connect(const std::string& address, int32 port)
 
 void DirectSocket::Disconnect()
 {
+	_running = false;
+	if (_thread.joinable())
+		_thread.join();
+
 	if (_tcpClient != nullptr)
 	{ 
 		_tcpClient->Disconnect();

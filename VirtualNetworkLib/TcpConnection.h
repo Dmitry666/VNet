@@ -4,9 +4,9 @@
 // Copyright (c) UTS. All rights reserved.
 #pragma once
 
-#include "Common.h"
-#include "Delegate.h"
 #include "TcpCommon.h"
+#include "Delegate.h"
+
 
 //#include "../common-private.h"
 //#include "tcp_request_handler.hpp"

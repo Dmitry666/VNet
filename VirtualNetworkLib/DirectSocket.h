@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Socket.h"
-
+#include <thread>
 
 namespace vnet {
 
@@ -46,6 +46,9 @@ private:
 private:
 	class TcpClient* _tcpClient;
 	class TcpConnection* _tcpConnection;
+
+	std::thread _thread;
+	bool _running;
 };
 
 } // End vnet.
