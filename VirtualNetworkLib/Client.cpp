@@ -97,8 +97,8 @@ void Client::Connect(const std::string& address, uint32 port)
 
 	if (address.size() > strlen("vbtp://"))
 	{ 
-		size_t index = address.find_first_of("vbtp://");
-		if (index != address.size() - 1)
+		size_t found = address.find_first_of("vbtp://");
+		if (found == 0) //found != std::string::npos)
 		{
 			std::string virtualAddress = std::string(address.begin() + strlen("vbtp://"), address.end());
 			if (_virtualConnection != nullptr)
