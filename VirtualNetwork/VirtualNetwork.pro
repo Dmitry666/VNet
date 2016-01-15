@@ -8,6 +8,7 @@ TARGET = VirtualNetwork
 TEMPLATE = app
 
 CONFIG += c++11
+DEFINES += WITH_SSL
 
 HEADERS += \
     Common.h \
@@ -34,5 +35,51 @@ SOURCES += \
     tcp/tcp_request_parser.cpp \
     tcp/tcp_server.cpp
 
-LIBS += -lHTTPCommandService -ldl -ljsoncpp
+win32 {
+    # Boost
+    INCLUDEPATH += $(EXTERNALDIR)/boost_1_59_0
 
+    # OpenSLL
+    INCLUDEPATH += $(EXTERNALDIR)/openssl-1.0.1c/include
+}
+
+LIBS += -lVirtualNetworkCommon
+#LIBS += -lHTTPCommandService -ldl -ljsoncpp
+
+win32 {
+    BOOST_VER = 1_59
+    COMPILER_SHORT = mgw48
+
+    debug {
+    BOOST_SUFFIX = $${COMPILER_SHORT}-sd-$${BOOST_VER}
+    }
+
+    release {
+    BOOST_SUFFIX = $${COMPILER_SHORT}-s-$${BOOST_VER}
+    }
+
+    LIBS += -L$(EXTERNALDIR)/boost_1_59_0/stage/lib
+
+    LIBS += -lboost_system-$${BOOST_SUFFIX} -lboost_filesystem-$${BOOST_SUFFIX}
+
+    debug {
+        LIBS += -lboost_thread-mgw48-mt-sd-1_59
+    }
+
+    release {
+        LIBS += -lboost_thread-mgw48-mt-s-1_59
+    }
+
+    LIBS += -lws2_32 -lmswsock
+}
+
+unix {
+    LIBS += -L/opt/local/lib
+    LIBS += -L/usr/local/lib
+    LIBS += -Wl,-rpath=/usr/local/lib
+    LIBS += -lboost_system -lboost_filesystem -lboost_thread
+    LIBS += -lpthread
+
+
+    LIBS += -lssl -lcrypto
+}

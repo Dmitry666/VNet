@@ -7,6 +7,10 @@
 
 #include "Archive.h"
 
+#ifndef _MSC_VER
+#include <string.h>
+#endif
+
 namespace vnet {
 
 /**

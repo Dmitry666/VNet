@@ -239,7 +239,7 @@ bool TcpClient::Reconnect()
 		); // End async_connect.
 #else
 		boost::asio::async_connect(socket_, endpoint_iterator,
-			[this](const boost::system::error_code& ec) {
+            [this](const boost::system::error_code& ec, const tcp::resolver::iterator& it) {
 				if (!ec)
 				{
 					_connected = true;

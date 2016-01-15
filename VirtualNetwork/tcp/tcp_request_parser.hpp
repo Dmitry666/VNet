@@ -4,6 +4,11 @@
 #include <tuple>
 #include <string>
 
+#ifndef _MSC_VER
+#include <streambuf>
+#include <iostream>
+#endif
+
 namespace vnet {
 
 struct request;
@@ -31,6 +36,7 @@ public:
 		int32_t command_code;
 		int32_t num_arguments;
 
+#if 0
 		membuf sbuf(buffer, buffer + sizeof(buffer));
 		std::istream in(&sbuf);
 
@@ -47,7 +53,7 @@ public:
             if (result == good || result == bad)
                 return std::make_tuple(result, begin);
         }
-
+#endif
         return std::make_tuple(indeterminate, begin);
     }
 };

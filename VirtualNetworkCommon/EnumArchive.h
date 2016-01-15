@@ -83,7 +83,7 @@ public:
 	__inline TEnumAsInt32()
 	{}
 
-	__inline TEnumAsInt32(const TEnumAsByte &byteEnum)
+    __inline TEnumAsInt32(const TEnumAsByte<TEnum> &byteEnum)
 		: _value(byteEnum._value)
 	{}
 

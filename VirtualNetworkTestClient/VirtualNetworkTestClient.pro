@@ -14,5 +14,12 @@ LIBS += -lVirtualNetworkLib
 SOURCES += \
     main.cpp
 
+win32 {
+    # Boost
+    INCLUDEPATH += $(EXTERNALDIR)/boost_1_59_0
 
+    # OpenSLL
+    INCLUDEPATH += $(EXTERNALDIR)/openssl-1.0.1c/include
+}
 
+LIBS += -lVirtualNetworkLib
