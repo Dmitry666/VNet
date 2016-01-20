@@ -46,8 +46,12 @@ win32 {
     INCLUDEPATH += $(EXTERNALDIR)/sqlite3
 }
 
+LIBS += -L../VirtualNetworkCommon
+
 LIBS += -lVirtualNetworkCommon
 #LIBS += -lHTTPCommandService -ldl -ljsoncpp
+
+
 
 win32 {
     BOOST_VER = 1_59
