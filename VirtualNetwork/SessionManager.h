@@ -9,6 +9,11 @@
 #include <deque>
 #include <string>
 
+#ifndef _WIN32
+#include <stdio.h>
+#include <string.h>
+#endif
+
 namespace vnet {
 
 /**

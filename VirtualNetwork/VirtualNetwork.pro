@@ -41,6 +41,9 @@ win32 {
 
     # OpenSLL
     INCLUDEPATH += $(EXTERNALDIR)/openssl-1.0.1c/include
+
+    # OpenSLL
+    INCLUDEPATH += $(EXTERNALDIR)/sqlite3
 }
 
 LIBS += -lVirtualNetworkCommon
