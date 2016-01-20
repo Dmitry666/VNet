@@ -89,4 +89,5 @@ unix {
 
 
     LIBS += -lssl -lcrypto
+    LIBS += -lsqlite3
 }
