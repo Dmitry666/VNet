@@ -84,7 +84,7 @@ unix {
     LIBS += -L/opt/local/lib
     LIBS += -L/usr/local/lib
     LIBS += -Wl,-rpath=/usr/local/lib
-    LIBS += -lboost_system -lboost_filesystem -lboost_thread
+    LIBS += -lboost_system -lboost_filesystem -lboost_thread -lboost_program_options
     LIBS += -lpthread
 
 
