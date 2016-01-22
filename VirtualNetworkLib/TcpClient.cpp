@@ -10,16 +10,11 @@
 using boost::asio::ip::tcp;
 //using namespace boost::interprocess;
 
-#define     NET_CMD_LOGIN_SANDBOX           8
-#define		NET_CMD_UPDATE_EMPTY			9
-
-#define TCP_SOCKET_PERIOD 300
-
-//#ifdef _DEBUG
-//#define TIMEOUT_TIME 3600
-//#else
+#ifdef _DEBUG
+#define TIMEOUT_TIME 3600
+#else
 #define TIMEOUT_TIME 5
-//#endif
+#endif
 
 namespace vnet {
 

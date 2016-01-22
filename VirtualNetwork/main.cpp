@@ -192,6 +192,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+#ifndef _WIN32
     if (vm.count("start"))
     {
         int pid = startChild();
@@ -204,6 +205,7 @@ int main(int argc, char* argv[])
     {
         return stopChild(argv[0]);
     }
+#endif
 
 	//!
 	char cCurrentPath[FILENAME_MAX];
@@ -225,41 +227,49 @@ int main(int argc, char* argv[])
 	sessionManager.Init();
 
 	request_handler handler(sessionManager);
-	tcp_server server(address, std::to_string(port), handler);
+
+	try
+	{	
+		tcp_server server(address, std::to_string(port), handler);
 
 
 #ifdef WITH_NETWORKAPI
-	HttpServiceArguments arguments;
-	arguments.Push("thread_pool_size", "1");
+		HttpServiceArguments arguments;
+		arguments.Push("thread_pool_size", "1");
 
-	HttpService service(arguments);
+		HttpService service(arguments);
 
-	string orcAddress = "0.0.0.0";
-	int32_t orcPort = vm.count("webport") ? vm["webport"].as<uint32_t>() : 20202;
+		string orcAddress = "0.0.0.0";
+		int32_t orcPort = vm.count("webport") ? vm["webport"].as<uint32_t>() : 20202;
 
-	cout << "Start HTTP Service: " << orcAddress << ":" << orcPort << endl;
-	service.Start(orcAddress, std::to_string(orcPort));
+		cout << "Start HTTP Service: " << orcAddress << ":" << orcPort << endl;
+		service.Start(orcAddress, std::to_string(orcPort));
 #endif
 	
-	server.start();
+		server.start();
 
 
-	bool bExit = false;
-	do
-	{
-		std::string command;
-		getline(std::cin, command);
-		transform(command.begin(), command.end(), command.begin(), ::tolower);
+		bool bExit = false;
+		do
+		{
+			std::string command;
+			getline(std::cin, command);
+			transform(command.begin(), command.end(), command.begin(), ::tolower);
 
-		if (command == "stop" || command == "exit")
-			bExit = true;
-	} 
-	while (!bExit);
+			if (command == "stop" || command == "exit")
+				bExit = true;
+		} 
+		while (!bExit);
 
 #ifdef WITH_NETWORKAPI
-	service.Stop();
-	service.Join();
+		service.Stop();
+		service.Join();
 #endif
 
-	server.stop();
+		server.stop();
+	}
+	catch (std::exception e)
+	{
+		cout << e.what() << endl;
+	}
 }
