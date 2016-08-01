@@ -9,6 +9,10 @@ TEMPLATE = lib
 
 CONFIG += c++11 staticlib
 
+android {
+    QT += network
+}
+
 HEADERS += \
     Archive.h \
     Common.h \

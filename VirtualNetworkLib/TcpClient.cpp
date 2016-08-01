@@ -163,6 +163,12 @@ bool TcpClient::VerifyCertificate(bool preverified, boost::asio::ssl::verify_con
 void TcpClient::WaitReconnect()
 {
 	reconnectTimer_.cancel();
+	if (_connected)
+	{
+		Disconnected.Invoke(this);
+	}
+	_connected = false;
+
 
 	if (_errorconnect)
 	{
@@ -199,18 +205,23 @@ bool TcpClient::Reconnect()
 		tcp::resolver::query query(_address, boost::lexical_cast<std::string>(_port));
 		tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 
-		BeginTimeout();
+		// BeginTimeout();
 
 		// Start an asynchronous connect operation.
 #ifdef WITH_SSL
-		boost::asio::async_connect(socket_.lowest_layer(), endpoint_iterator,
+		boost::asio::async_connect(
+			socket_.lowest_layer(), 
+			endpoint_iterator,
 			[this](const boost::system::error_code& ec, const tcp::resolver::iterator& it){
+
 				if (!ec)
 				{
 					_connected = true;
 					_errorconnect = false;
 					_reconnectCount = 0;
-					socket_.async_handshake(boost::asio::ssl::stream_base::client,
+
+					socket_.async_handshake(
+						boost::asio::ssl::stream_base::client,
 						[this](const boost::system::error_code& ec){
 							if (!ec)
 							{
@@ -233,7 +244,9 @@ bool TcpClient::Reconnect()
 			}
 		); // End async_connect.
 #else
-		boost::asio::async_connect(socket_, endpoint_iterator,
+		boost::asio::async_connect(
+			socket_, 
+			endpoint_iterator,
             [this](const boost::system::error_code& ec, const tcp::resolver::iterator& it) {
 				if (!ec)
 				{
@@ -266,11 +279,13 @@ bool TcpClient::Reconnect()
 */
 void TcpClient::DoRead()
 {
-	BeginTimeout();
+	// BeginTimeout();
 
-	boost::asio::async_read(socket_,
+	boost::asio::async_read(
+		socket_,
 		boost::asio::buffer(inbound_header_, header_length),
-		[this](boost::system::error_code ec, std::size_t bytes_transferred){
+		[this](boost::system::error_code ec, std::size_t bytes_transferred) {
+
 			timerTimeout_.cancel();
 
 			// TODO. Error. Block. This don't work.
@@ -349,7 +364,8 @@ void TcpClient::DoWrite()
 	_commands.clear();
 
 	// Send data.
-	boost::asio::async_write(socket_,
+	boost::asio::async_write(
+		socket_,
 		boost::asio::buffer(outbound_data_),
 		[this](boost::system::error_code ec, std::size_t) {
 
@@ -363,8 +379,6 @@ void TcpClient::DoWrite()
 			DoRead();
 		}
 	);
-
-	//InfoStream::Write("Send: %f", _activity);
 }
 
 void TcpClient::BeginTimeout()

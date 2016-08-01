@@ -5,7 +5,9 @@ namespace vnet {
 
 tcp_server::tcp_server(const std::string& address, const std::string& port, request_handler& request_handler)
     : io_service_()
+#ifdef WITH_SSL
 	, context_(boost::asio::ssl::context::sslv23)
+#endif
     , signals_(io_service_)
     , acceptor_(io_service_)
     , connection_manager_()
@@ -71,16 +73,17 @@ void tcp_server::stop()
 void tcp_server::do_accept()
 {
 #ifdef WITH_SSL
-	connection_ptr conn = std::make_shared<connection>(io_service_, context_, connection_manager_, request_handler_);
+	auto conn = std::make_shared<connection>(io_service_, context_, connection_manager_, request_handler_);
 #endif
 
     acceptor_.async_accept(
 #ifdef WITH_SSL
 		conn->socket().lowest_layer(),// socket_.lowest_layer(),
+		[this, conn](boost::system::error_code ec)
 #else
 		socket_,
 #endif
-		[this, conn](boost::system::error_code ec)
+		[this](boost::system::error_code ec)
         {
             // Check whether the server was stopped by a signal before this
             // completion handler had a chance to run.

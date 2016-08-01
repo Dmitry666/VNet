@@ -79,16 +79,17 @@ void TcpServer::Stop()
 void TcpServer::DoAccept()
 {
 #ifdef WITH_SSL
-	TcpConnectionPtr connection = std::make_shared<TcpConnection>(io_service_, context_, connection_manager_);
+	auto connection = std::make_shared<TcpConnection>(io_service_, context_, connection_manager_);
 #endif
 
     acceptor_.async_accept(
 #ifdef WITH_SSL
 		connection->socket().lowest_layer(),// socket_.lowest_layer(),
+		[this, connection](boost::system::error_code ec)
 #else
 		socket_,
 #endif
-		[this, connection](boost::system::error_code ec)
+		[this](boost::system::error_code ec)
         {
             // Check whether the server was stopped by a signal before this
             // completion handler had a chance to run.
